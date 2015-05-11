@@ -1,0 +1,10 @@
+{
+  "name": "PivotalTracker Links",
+  "description": "Highlights PivotalTracker story numbers as links",
+  "version": "1.0",
+  "content_scripts": [ {
+      "js": [ "mutation-summary.js", "content.js" ],
+      "matches": [ "http://*.planitpoker.com/board/*" ]
+  }],
+  "manifest_version": 2
+}
