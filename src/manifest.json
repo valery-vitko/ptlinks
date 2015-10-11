@@ -1,7 +1,8 @@
 {
   "name": "PivotalTracker Links",
+  "short_name": "ptlinks",
   "description": "Highlights PivotalTracker story numbers as links",
-  "version": "1.0",
+  "version": "1.0.1",
   "permissions": [
     "http://*.planitpoker.com/board/*"
   ],
@@ -10,5 +11,11 @@
       "matches": [ "http://*.planitpoker.com/board/*" ],
       "run_at": "document_start"
   }],
+  "icons": {
+  	"16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "96": "assets/icon96-original.png",
+   "128": "assets/icon128.png"
+  },
   "manifest_version": 2
 }
