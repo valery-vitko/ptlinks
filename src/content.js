@@ -7,10 +7,10 @@ function onLinksAdded(links) {
 };
 
 function buildLink(element) {
-	var issueNumber = element.innerText.match(/#\d{8,9}\b/);
+	var issueNumber = element.innerText.match(/\d{8,9}\b/);
 	if (issueNumber) {
 		element.innerHTML = element.innerHTML.replace(
-			/#(\d{8,9})\b/,
+			/#?(\d{8,9})\b/,
 			'<a target="_blank" onclick="event.stopPropagation()" href="https://www.pivotaltracker.com/story/show/$1">#$1</a>'
 		);
 	}
