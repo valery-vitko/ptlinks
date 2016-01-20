@@ -2,7 +2,7 @@
   "name": "PivotalTracker Links",
   "short_name": "ptlinks",
   "description": "Highlights PivotalTracker story numbers as links",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "permissions": [
     "http://*.planitpoker.com/board/*"
   ],

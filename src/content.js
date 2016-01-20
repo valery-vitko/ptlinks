@@ -7,10 +7,10 @@ function onLinksAdded(links) {
 };
 
 function buildLink(element) {
-	var jiraIssueKey = element.innerText.match(/\b[A-Z]{2}-\d{3,5}\b/);
+	var jiraIssueKey = element.innerText.match(/\b[A-Z]{2,6}-\d{3,5}\b/);
 	if (jiraIssueKey) {
 		element.innerHTML = element.innerHTML.replace(
-			/\b([A-Z]{2}-\d{3,5})\b/,
+			/\b([A-Z]{2,6}-\d{3,5})\b/,
 			'<a target="_blank" onclick="event.stopPropagation()" href="https://socialwellth.atlassian.net/browse/$1">$1</a>'
 		);
 		return;
