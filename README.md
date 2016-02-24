@@ -1,5 +1,5 @@
 # ptlinks
-Google Chrome extension that highlights PivotalTracker story numbers as links on other web sites.
+Google Chrome extension that highlights PivotalTracker and JIRA story numbers as links on other web sites.
 
 Supported web sites:
 * PlanITpoker (http://www.planitpoker.com/).
