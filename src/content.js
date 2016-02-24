@@ -11,7 +11,7 @@ function buildLink(element) {
 	if (jiraIssueKey) {
 		element.innerHTML = element.innerHTML.replace(
 			/\b([A-Z]{2,6}-\d{3,5})\b/,
-			'<a target="_blank" onclick="event.stopPropagation()" href="https://socialwellth.atlassian.net/browse/$1">$1</a>'
+			'<a target="_blank" onclick="event.stopPropagation()" href="https://<JIRA tenant name here>.atlassian.net/browse/$1">$1</a>'
 		);
 		return;
 	}
