@@ -1,9 +1,12 @@
-# ptlinks
-Google Chrome extension that highlights PivotalTracker and JIRA story numbers as links on other web sites.
+# Links to Jira
 
-Supported web sites:
-* PlanITpoker (http://www.planitpoker.com/).
+Google Chrome extension that highlights Jira issue IDs as links on various web pages.
 
-[Install](https://chrome.google.com/webstore/detail/pivotaltracker-links/gkioloikgbfkgonlmmhkgchmoilcbglb) from Chrome Web Store.
+Supported web pages:
+
+* GitHub pull requests
+* PlanITpoker (https://*.planitpoker.com/board/)
+
+[Install](https://chrome.google.com/webstore/detail/links-to-jira/gkioloikgbfkgonlmmhkgchmoilcbglb) from Chrome Web Store.
 
 [How to install from source code](http://superuser.com/questions/247651/how-does-one-install-an-extension-for-chrome-browser-from-the-local-file-system).
