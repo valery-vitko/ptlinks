@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PT Links Options</title>
+  <style>
+    body {
+      margin: 1rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+    
+    small {
+      display: block;
+    }
+    
+    .action-row {
+      display: flex;
+      align-items: center;
+    }
+    
+    #status {
+      margin-left: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <form>
+    <div class="form-group">
+      <label for="jiraTenantName">JIRA Tenant Name:</label>
+      <input type="text" id="jiraTenantName" placeholder="your-company">
+      <small>Enter your JIRA tenant name (e.g., if your JIRA URL is https://example.atlassian.net, enter "example")</small>
+    </div>
+    
+    <div class="action-row">
+      <button id="save" type="button">Save</button>
+      <div id="status">Options saved!</div>
+    </div>
+  </form>
+
+  <script src="constants.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

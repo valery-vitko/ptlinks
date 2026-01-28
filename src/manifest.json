@@ -1,21 +1,39 @@
 {
-  "name": "PivotalTracker Links",
+  "name": "Links to Jira",
   "short_name": "ptlinks",
-  "description": "Highlights PivotalTracker story numbers as links",
-  "version": "1.0.4",
+  "description": "A non-official extension that highlights Jira issue IDs as links on various pages like GitHub PRs.",
+  "version": "2.0.0",
+  "manifest_version": 3,
   "permissions": [
-    "http://*.planitpoker.com/board/*"
+    "storage"
   ],
-  "content_scripts": [ {
-      "js": [ "mutation-summary.js", "content.js" ],
-      "matches": [ "http://*.planitpoker.com/board/*" ],
-      "run_at": "document_start"
-  }],
+  "host_permissions": [
+    "http://*.planitpoker.com/board/*",
+    "https://*.planitpoker.com/board/*",
+    "https://github.com/*/*/pull/*"
+  ],
+  "content_scripts": [
+    {
+      "js": [
+        "constants.js",
+        "content.js"
+      ],
+      "matches": [
+        "http://*.planitpoker.com/board/*",
+        "https://*.planitpoker.com/board/*",
+        "https://github.com/*/*/pull/*"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
   "icons": {
     "16": "assets/icon16.png",
     "48": "assets/icon48.png",
     "96": "assets/icon96-original.png",
-   "128": "assets/icon128.png"
+    "128": "assets/icon128.png"
   },
-  "manifest_version": 2
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  }
 }
