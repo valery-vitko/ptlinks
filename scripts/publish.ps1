@@ -99,11 +99,11 @@ if ($existingTag) {
 $cwsReady = $env:EXTENSION_ID -and $env:CLIENT_ID -and $env:CLIENT_SECRET -and $env:REFRESH_TOKEN
 if ($cwsReady) {
     Write-Host "`nUploading to Chrome Web Store..." -ForegroundColor Cyan
-    npx chrome-webstore-upload upload --source $zipPath --extension-id $env:EXTENSION_ID --client-id $env:CLIENT_ID --client-secret $env:CLIENT_SECRET --refresh-token $env:REFRESH_TOKEN
+    npx chrome-webstore-upload-cli upload --source $zipPath --extension-id $env:EXTENSION_ID --client-id $env:CLIENT_ID --client-secret $env:CLIENT_SECRET --refresh-token $env:REFRESH_TOKEN
 
     $publishNow = Read-Host "Publish to Chrome Web Store now? (y/N)"
     if ($publishNow -eq 'y' -or $publishNow -eq 'Y') {
-        npx chrome-webstore-upload publish --extension-id $env:EXTENSION_ID --client-id $env:CLIENT_ID --client-secret $env:CLIENT_SECRET --refresh-token $env:REFRESH_TOKEN
+        npx chrome-webstore-upload-cli publish --extension-id $env:EXTENSION_ID --client-id $env:CLIENT_ID --client-secret $env:CLIENT_SECRET --refresh-token $env:REFRESH_TOKEN
         Write-Host "Published to Chrome Web Store!" -ForegroundColor Green
     } else {
         Write-Host "Uploaded but not published. Publish manually from the Developer Dashboard." -ForegroundColor Yellow
