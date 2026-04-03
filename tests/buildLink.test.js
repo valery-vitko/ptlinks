@@ -142,4 +142,52 @@ describe('buildLink', () => {
     content.buildLink(el);
     expect(el.innerHTML).toContain('event.stopPropagation()');
   });
+
+  // --- Commit page subjects (inner div wrapping text) ---
+  it('converts Jira IDs inside a nested div (commit page structure)', () => {
+    const outer = document.createElement('span');
+    const inner = document.createElement('div');
+    inner.textContent = 'VS-246 VS-361 VS-362';
+    outer.appendChild(inner);
+    document.body.appendChild(outer);
+
+    content.buildLink(outer);
+
+    const links = linksIn(outer);
+    expect(links).toHaveLength(3);
+    expect(links[0].href).toContain('/browse/VS-246');
+    expect(links[1].href).toContain('/browse/VS-361');
+    expect(links[2].href).toContain('/browse/VS-362');
+  });
+
+  it('converts Jira IDs with descriptive text in commit subject', () => {
+    const el = makeElement('FRIA2-414 Robust base href concatenation logic to fix edge cases');
+    content.buildLink(el);
+
+    const links = linksIn(el);
+    expect(links).toHaveLength(1);
+    expect(links[0].href).toContain('/browse/FRIA2-414');
+    expect(el.textContent).toContain('Robust base href');
+  });
+
+  it('converts mixed-project Jira IDs in commit subject', () => {
+    const el = makeElement('FF-664 FF-697 Web Admin: start migrating to node 18');
+    content.buildLink(el);
+
+    const links = linksIn(el);
+    expect(links).toHaveLength(2);
+    expect(links[0].href).toContain('/browse/FF-664');
+    expect(links[1].href).toContain('/browse/FF-697');
+  });
+
+  it('converts three Jira IDs from same project in commit subject', () => {
+    const el = makeElement('INF-3659 INF-3658 INF-3660 Common update');
+    content.buildLink(el);
+
+    const links = linksIn(el);
+    expect(links).toHaveLength(3);
+    expect(links[0].href).toContain('/browse/INF-3659');
+    expect(links[1].href).toContain('/browse/INF-3658');
+    expect(links[2].href).toContain('/browse/INF-3660');
+  });
 });

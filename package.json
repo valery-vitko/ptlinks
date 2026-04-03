@@ -1,6 +1,6 @@
 {
   "name": "ptlinks",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Google Chrome extension that highlights Jira issue IDs as links on various web pages.",
   "private": true,
   "scripts": {

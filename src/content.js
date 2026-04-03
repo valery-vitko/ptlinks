@@ -27,12 +27,14 @@ const elementConfig = {
   // GitHub Pull Request selectors
   'github.com': {
     immediate: [
-      'span.f1.text-normal.markdown-title',  // For commits tab
-      'bdi.js-issue-title.markdown-title'    // For other PR tabs
+      'span.f1.text-normal.markdown-title',           // PR commits tab
+      'bdi.js-issue-title.markdown-title',             // PR title
+      '[class*="commitMessageContainer"] > .f5'        // Commit page subject
     ],
     watched: [
-      'span.f1.text-normal.markdown-title',  // For commits tab
-      'bdi.js-issue-title.markdown-title'    // For other PR tabs
+      'span.f1.text-normal.markdown-title',           // PR commits tab
+      'bdi.js-issue-title.markdown-title',             // PR title
+      '[class*="commitMessageContainer"] > .f5'        // Commit page subject
     ]
   }
 };

@@ -11,6 +11,10 @@ npx vitest run -t "converts multiple"    # Run tests matching a name pattern
 ./scripts/publish.ps1         # Test, build ZIP, tag, optionally upload to CWS
 ```
 
+### Shortcuts
+
+- **deliver** — commit, push, and publish (`./scripts/publish.ps1`)
+
 ## Architecture
 
 Chrome extension (Manifest v3) that converts Jira issue IDs and Pivotal Tracker story numbers into clickable links on GitHub PRs and PlanitPoker.

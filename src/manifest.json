@@ -2,7 +2,7 @@
   "name": "Links to Jira",
   "short_name": "ptlinks",
   "description": "A non-official extension that highlights Jira issue IDs as links on various pages like GitHub PRs.",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "manifest_version": 3,
   "permissions": [
     "storage"
@@ -10,7 +10,8 @@
   "host_permissions": [
     "http://*.planitpoker.com/board/*",
     "https://*.planitpoker.com/board/*",
-    "https://github.com/*/*/pull/*"
+    "https://github.com/*/*/pull/*",
+    "https://github.com/*/*/commit/*"
   ],
   "content_scripts": [
     {
@@ -21,7 +22,8 @@
       "matches": [
         "http://*.planitpoker.com/board/*",
         "https://*.planitpoker.com/board/*",
-        "https://github.com/*/*/pull/*"
+        "https://github.com/*/*/pull/*",
+        "https://github.com/*/*/commit/*"
       ],
       "run_at": "document_idle"
     }

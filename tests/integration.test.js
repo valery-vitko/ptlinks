@@ -91,6 +91,69 @@ describe('integration', () => {
     });
   });
 
+  // --- Commit page selector ---
+  describe('commit page selector', () => {
+    it('elementConfig includes commitMessageContainer selector for github.com', () => {
+      const ghConfig = content.elementConfig['github.com'];
+      const commitSelector = '[class*="commitMessageContainer"] > .f5';
+      expect(ghConfig.immediate).toContain(commitSelector);
+      expect(ghConfig.watched).toContain(commitSelector);
+    });
+
+    it('processImmediateElements links Jira IDs in commit page DOM structure', () => {
+      // Simulate GitHub commit page DOM: container div with CSS-module class > span.f5 > div
+      const container = document.createElement('div');
+      container.className = 'CommitHeader-module__commitMessageContainer__Nj8bH';
+      const span = document.createElement('span');
+      span.className = 'ws-pre-wrap f5 wb-break-word text-mono';
+      const inner = document.createElement('div');
+      inner.textContent = 'VS-246 VS-361 VS-362';
+      span.appendChild(inner);
+      container.appendChild(span);
+      document.body.appendChild(container);
+
+      // Stub location for github.com
+      const origLocation = window.location;
+      delete window.location;
+      window.location = { hostname: 'github.com', href: 'https://github.com/Org/repo/commit/abc123' };
+
+      content.processImmediateElements();
+
+      const links = span.querySelectorAll('a');
+      expect(links).toHaveLength(3);
+      expect(links[0].href).toContain('/browse/VS-246');
+      expect(links[1].href).toContain('/browse/VS-361');
+      expect(links[2].href).toContain('/browse/VS-362');
+
+      window.location = origLocation;
+    });
+
+    it('processImmediateElements links single Jira ID with description on commit page', () => {
+      const container = document.createElement('div');
+      container.className = 'CommitHeader-module__commitMessageContainer__xYz12';
+      const span = document.createElement('span');
+      span.className = 'ws-pre-wrap f5 wb-break-word text-mono';
+      const inner = document.createElement('div');
+      inner.textContent = 'FRIA2-314 Migrate to npm, webpack 5, refresh packages';
+      span.appendChild(inner);
+      container.appendChild(span);
+      document.body.appendChild(container);
+
+      const origLocation = window.location;
+      delete window.location;
+      window.location = { hostname: 'github.com', href: 'https://github.com/Org/repo/commit/def456' };
+
+      content.processImmediateElements();
+
+      const links = span.querySelectorAll('a');
+      expect(links).toHaveLength(1);
+      expect(links[0].href).toContain('/browse/FRIA2-314');
+      expect(span.textContent).toContain('Migrate to npm');
+
+      window.location = origLocation;
+    });
+  });
+
   // --- Tenant name flows into generated links ---
   describe('tenant name integration', () => {
     it('uses configured tenant name in generated Jira URLs', async () => {
