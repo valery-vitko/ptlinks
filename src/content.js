@@ -38,20 +38,22 @@ const elementConfig = {
 };
 
 function buildLink(element) {
-  const jiraIssueKeyRegex = /\b([A-Z][A-Z0-9]{1,5}-\d{1,5})\b/;
-  const jiraIssueKey = element.innerText.match(jiraIssueKeyRegex);
-  if (jiraIssueKey) {
-    element.innerHTML = element.innerHTML.replace(
+  // Skip if already processed (links were already injected)
+  if (element.querySelector('a')) return;
+
+  const jiraIssueKeyRegex = /\b([A-Z][A-Z0-9]{1,5}-\d{1,5})\b/g;
+  if (jiraIssueKeyRegex.test(element.textContent)) {
+    jiraIssueKeyRegex.lastIndex = 0; // reset after .test()
+    element.innerHTML = element.innerHTML.replace(  // eslint-disable-line no-unsanitized/property -- static replacement pattern, no user input
       jiraIssueKeyRegex,
       `<a target="_blank" onclick="event.stopPropagation()" href="https://${JIRA_TENANT_NAME}.atlassian.net/browse/$1">$1</a>`
     );
     return;
   }
 
-  var ptStoryNumber = element.innerText.match(/\d{8,9}\b/);
-  if (ptStoryNumber) {
-    element.innerHTML = element.innerHTML.replace(
-      /#?(\d{8,9})\b/,
+  if (/\d{8,9}\b/.test(element.textContent)) {
+    element.innerHTML = element.innerHTML.replace(  // eslint-disable-line no-unsanitized/property -- static replacement pattern, no user input
+      /#?(\d{8,9})\b/g,
       '<a target="_blank" onclick="event.stopPropagation()" href="https://www.pivotaltracker.com/story/show/$1">#$1</a>'
     );
     return;
