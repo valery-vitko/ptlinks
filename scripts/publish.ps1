@@ -1,5 +1,14 @@
 # Chrome Extension Publishing Script
 # Builds a ZIP package and creates a git tag for the release
+#
+# Parameters:
+#   -Yes     Non-interactive mode: auto-confirm all prompts (recreate tags, publish to CWS)
+#   -Upload  Upload to CWS but do not publish (default in interactive mode)
+
+param(
+    [switch]$Yes,
+    [switch]$Upload
+)
 
 $ErrorActionPreference = "Stop"
 $PSNativeCommandUseErrorActionPreference = $true
@@ -84,8 +93,13 @@ Write-Host "`nChecking git tags..." -ForegroundColor Cyan
 $existingTag = git tag -l $tagName 2>$null
 if ($existingTag) {
     Write-Host "Git tag '$tagName' already exists" -ForegroundColor Yellow
-    $createTag = Read-Host "Do you want to delete and recreate it? (y/N)"
-    if ($createTag -eq 'y' -or $createTag -eq 'Y') {
+    if ($Yes) {
+        $recreate = $true
+    } else {
+        $answer = Read-Host "Do you want to delete and recreate it? (y/N)"
+        $recreate = $answer -eq 'y' -or $answer -eq 'Y'
+    }
+    if ($recreate) {
         git tag -d $tagName
         git tag -a $tagName -m "Release $version"
         Write-Host "Git tag '$tagName' recreated" -ForegroundColor Green
@@ -101,8 +115,15 @@ if ($cwsReady) {
     Write-Host "`nUploading to Chrome Web Store..." -ForegroundColor Cyan
     npx chrome-webstore-upload-cli upload --source $zipPath --extension-id $env:EXTENSION_ID --client-id $env:CLIENT_ID --client-secret $env:CLIENT_SECRET --refresh-token $env:REFRESH_TOKEN
 
-    $publishNow = Read-Host "Publish to Chrome Web Store now? (y/N)"
-    if ($publishNow -eq 'y' -or $publishNow -eq 'Y') {
+    if ($Upload) {
+        $publish = $false
+    } elseif ($Yes) {
+        $publish = $true
+    } else {
+        $answer = Read-Host "Publish to Chrome Web Store now? (y/N)"
+        $publish = $answer -eq 'y' -or $answer -eq 'Y'
+    }
+    if ($publish) {
         npx chrome-webstore-upload-cli publish --extension-id $env:EXTENSION_ID --client-id $env:CLIENT_ID --client-secret $env:CLIENT_SECRET --refresh-token $env:REFRESH_TOKEN
         Write-Host "Published to Chrome Web Store!" -ForegroundColor Green
     } else {

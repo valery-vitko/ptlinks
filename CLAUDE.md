@@ -8,12 +8,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm test              # Run all tests (vitest + jsdom)
 npx vitest run tests/buildLink.test.js   # Run a single test file
 npx vitest run -t "converts multiple"    # Run tests matching a name pattern
-./scripts/publish.ps1         # Test, build ZIP, tag, optionally upload to CWS
+./scripts/publish.ps1            # Test, build ZIP, tag, optionally upload to CWS (interactive)
+./scripts/publish.ps1 -Yes       # Non-interactive: auto-confirm all prompts
+./scripts/publish.ps1 -Upload    # Upload to CWS without publishing
 ```
 
 ### Shortcuts
 
-- **deliver** — commit, push, and publish (`./scripts/publish.ps1`)
+- **deliver** — commit, push, and publish (`./scripts/publish.ps1 -Yes`)
 
 ## Architecture
 
