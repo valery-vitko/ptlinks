@@ -1,2 +1,5 @@
 # Build artifacts
 webstore/*.zip
+
+# Dependencies
+node_modules/

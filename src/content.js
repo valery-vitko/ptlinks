@@ -177,3 +177,19 @@ document.addEventListener('DOMContentLoaded', () => {
 if (document.readyState !== 'loading') {
   initializeObservation();
 }
+
+// Export for testing (ignored in browser context)
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    buildLink,
+    elementConfig,
+    getConfigForCurrentSite,
+    processImmediateElements,
+    processWatchedElements,
+    readSettings,
+    initializeObservation,
+    // Expose tenant name getter/setter for tests
+    get JIRA_TENANT_NAME() { return JIRA_TENANT_NAME; },
+    set JIRA_TENANT_NAME(v) { JIRA_TENANT_NAME = v; },
+  };
+}

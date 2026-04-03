@@ -2,6 +2,12 @@
 # Builds a ZIP package and creates a git tag for the release
 
 $ErrorActionPreference = "Stop"
+$PSNativeCommandUseErrorActionPreference = $true
+
+# Run tests before packaging
+Write-Host "Running tests..." -ForegroundColor Cyan
+npm test
+Write-Host "All tests passed!" -ForegroundColor Green
 
 # Paths
 $rootDir = $PSScriptRoot
@@ -16,6 +22,15 @@ $version = $manifest.version
 
 Write-Host "Extension: $($manifest.name)" -ForegroundColor Green
 Write-Host "Version: $version" -ForegroundColor Green
+
+# Sync version into package.json
+$packageJsonPath = Join-Path $rootDir "package.json"
+$packageJson = Get-Content $packageJsonPath -Raw | ConvertFrom-Json
+if ($packageJson.version -ne $version) {
+    $packageJson.version = $version
+    $packageJson | ConvertTo-Json -Depth 10 | Set-Content $packageJsonPath -Encoding UTF8
+    Write-Host "Synced package.json version to $version" -ForegroundColor Yellow
+}
 
 # Create webstore directory if it doesn't exist
 if (-not (Test-Path $webstoreDir)) {

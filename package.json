@@ -1,0 +1,25 @@
+{
+  "name": "ptlinks",
+  "version": "2.0.1",
+  "description": "Google Chrome extension that highlights Jira issue IDs as links on various web pages.",
+  "private": true,
+  "scripts": {
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valery-vitko/ptlinks.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/valery-vitko/ptlinks/issues"
+  },
+  "homepage": "https://github.com/valery-vitko/ptlinks#readme",
+  "devDependencies": {
+    "jsdom": "^29.0.1",
+    "vitest": "^4.1.2"
+  }
+}
