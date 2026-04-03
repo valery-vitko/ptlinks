@@ -3,3 +3,6 @@ webstore/*.zip
 
 # Dependencies
 node_modules/
+
+# Secrets (.env is committed with placeholders; .env.local has real values)
+.env.local

@@ -4,13 +4,35 @@
 $ErrorActionPreference = "Stop"
 $PSNativeCommandUseErrorActionPreference = $true
 
+# Load .env files. Priority: shell env > .env.local > .env
+$rootDir = Join-Path $PSScriptRoot ..
+$shellEnvKeys = @{}
+foreach ($key in @('EXTENSION_ID', 'CLIENT_ID', 'CLIENT_SECRET', 'REFRESH_TOKEN')) {
+    if (Get-Item "env:$key" -ErrorAction SilentlyContinue) {
+        $shellEnvKeys[$key] = $true
+    }
+}
+foreach ($envFile in @('.env', '.env.local')) {
+    $envPath = Join-Path $rootDir $envFile
+    if (Test-Path $envPath) {
+        Get-Content $envPath | ForEach-Object {
+            if ($_ -match '^\s*([A-Z_]+)\s*=\s*(.+?)\s*$') {
+                $key = $Matches[1]
+                if (-not $shellEnvKeys[$key]) {
+                    [Environment]::SetEnvironmentVariable($key, $Matches[2], 'Process')
+                }
+            }
+        }
+        Write-Host "Loaded $envFile" -ForegroundColor DarkGray
+    }
+}
+
 # Run tests before packaging
 Write-Host "Running tests..." -ForegroundColor Cyan
 npm test
 Write-Host "All tests passed!" -ForegroundColor Green
 
 # Paths
-$rootDir = $PSScriptRoot
 $srcDir = Join-Path $rootDir "src"
 $webstoreDir = Join-Path $rootDir "webstore"
 $manifestPath = Join-Path $srcDir "manifest.json"
@@ -73,6 +95,21 @@ if ($existingTag) {
     Write-Host "Git tag '$tagName' created" -ForegroundColor Green
 }
 
+# Chrome Web Store upload (requires env vars — see README for setup)
+$cwsReady = $env:EXTENSION_ID -and $env:CLIENT_ID -and $env:CLIENT_SECRET -and $env:REFRESH_TOKEN
+if ($cwsReady) {
+    Write-Host "`nUploading to Chrome Web Store..." -ForegroundColor Cyan
+    npx chrome-webstore-upload upload --source $zipPath --extension-id $env:EXTENSION_ID --client-id $env:CLIENT_ID --client-secret $env:CLIENT_SECRET --refresh-token $env:REFRESH_TOKEN
+
+    $publishNow = Read-Host "Publish to Chrome Web Store now? (y/N)"
+    if ($publishNow -eq 'y' -or $publishNow -eq 'Y') {
+        npx chrome-webstore-upload publish --extension-id $env:EXTENSION_ID --client-id $env:CLIENT_ID --client-secret $env:CLIENT_SECRET --refresh-token $env:REFRESH_TOKEN
+        Write-Host "Published to Chrome Web Store!" -ForegroundColor Green
+    } else {
+        Write-Host "Uploaded but not published. Publish manually from the Developer Dashboard." -ForegroundColor Yellow
+    }
+}
+
 # Summary
 Write-Host "`n================================" -ForegroundColor Cyan
 Write-Host "Build Complete!" -ForegroundColor Green
@@ -80,7 +117,10 @@ Write-Host "================================" -ForegroundColor Cyan
 Write-Host "Package: $zipPath"
 Write-Host "Version: $version"
 Write-Host "Tag: $tagName"
-Write-Host "`nNext steps:" -ForegroundColor Yellow
-Write-Host "1. Upload $zipFileName to Chrome Web Store Developer Dashboard"
-Write-Host "2. Push git tag: git push origin $tagName"
+if (-not $cwsReady) {
+    Write-Host "`nNext steps:" -ForegroundColor Yellow
+    Write-Host "1. Upload $zipFileName to Chrome Web Store Developer Dashboard"
+    Write-Host "   (or set CWS env vars to automate — see README)"
+    Write-Host "2. Push git tag: git push origin $tagName"
+}
 Write-Host "================================`n" -ForegroundColor Cyan
